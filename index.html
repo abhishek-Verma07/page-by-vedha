@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Do You Love Me ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  height:100vh;
+  background:#000;
+  color:#fff;
+  font-family:Poppins,system-ui;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+
+/* grid bg */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+  background-size:40px 40px;
+  pointer-events:none;
+}
+
+.app{
+  text-align:center;
+  width:90%;
+  max-width:420px;
+}
+
+img{
+  width:200px;
+  margin-bottom:20px;
+}
+
+h1{
+  font-size:22px;
+  margin-bottom:20px;
+  text-shadow:0 0 12px rgba(255,255,255,.6);
+}
+
+.buttons{
+  display:flex;
+  justify-content:center;
+  gap:15px;
+}
+
+button{
+  padding:12px 30px;
+  border:none;
+  border-radius:30px;
+  font-size:16px;
+  cursor:pointer;
+  font-weight:600;
+}
+
+.yes{
+  background:#00ff9c;
+  box-shadow:0 0 15px #00ff9c;
+}
+.no{
+  background:#ff4b4b;
+  box-shadow:0 0 15px #ff4b4b;
+  color:white;
+}
+
+.view{display:none}
+.view.active{display:block}
+
+/* flying gif */
+.fly{
+  position:fixed;
+  bottom:-60px;
+  width:45px;
+  animation:fly 5s linear forwards;
+  pointer-events:none;
+}
+@keyframes fly{
+  to{transform:translateY(-120vh);opacity:0}
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- LOVE -->
+  <div class="view" id="home">
+    <img src="https://i.pinimg.com/originals/56/0a/69/560a6916e917d3bd9b9e05dbd8eb52a8.gif">
+    <h1>Do You Love Me? ❤️</h1>
+    <div class="buttons">
+      <button class="yes" onclick="go('/yes')">YES</button>
+      <button class="no" onclick="go('/no')">NO</button>
+    </div>
+  </div>
+
+  <!-- MAAR -->
+  <div class="view" id="maar">
+    <img src="https://i.pinimg.com/originals/c4/1b/2c/c41b2ccc1b7098f402ea454ebe3fae3b.gif">
+    <h1>Maar Khana He? 😡</h1>
+    <div class="buttons">
+      <button class="no" onclick="back()">NO</button>
+    </div>
+  </div>
+
+  <!-- SMILE -->
+  <div class="view" id="smile">
+    <img src="https://i.pinimg.com/originals/f2/8f/b6/f28fb64aca49ebfd0d75fe607eb7b5f2.gif">
+    <h1>Am I the reason behind your smile? ❤️</h1>
+    <div class="buttons">
+      <button class="yes" onclick="go('/percent')">YES</button>
+      <button class="no" onclick="go('/no')">NO</button>
+    </div>
+  </div>
+
+  <!-- PERCENT -->
+  <div class="view" id="percent">
+    <img src="https://i.pinimg.com/originals/48/d6/3d/48d63d7d9037071b11d3c1eff21e3c85.gif">
+    <h1>How much do you love me (in percentage 😄)?</h1>
+    <div class="buttons">
+      <button class="yes" onclick="go('/final')">100%</button>
+      <button class="no" onclick="go('/no')">0%</button>
+    </div>
+  </div>
+
+  <!-- FINAL -->
+  <div class="view" id="final">
+    <img src="https://i.pinimg.com/originals/36/65/b2/3665b227058f4b901e62401c696bae41.gif">
+    <h1>I Love You Baby Ji 🙏</h1>
+    <div class="buttons">
+      <button class="yes" onclick="startLove()">I Love You Too 🥰</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let last="/";
+
+const routes={
+  "/":"home",
+  "/yes":"smile",
+  "/no":"maar",
+  "/percent":"percent",
+  "/final":"final"
+};
+
+function render(path){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById(routes[path]).classList.add('active');
+}
+
+function go(path){
+  if(path!=="/no") last=path;
+  history.pushState({},'',path);
+  render(path);
+}
+
+function back(){
+  history.pushState({},'',last);
+  render(last);
+}
+
+window.onpopstate=()=>render(location.pathname);
+
+render(routes[location.pathname]?location.pathname:"/");
+
+function startLove(){
+  setInterval(()=>{
+    const g=document.createElement("img");
+    g.src="https://i.pinimg.com/originals/de/c3/de/dec3de435f81b604f684576866a48731.gif";
+    g.className="fly";
+    g.style.left=Math.random()*100+"vw";
+    document.body.appendChild(g);
+    setTimeout(()=>g.remove(),5000);
+  },600);
+}
+</script>
+
+</body>
+</html>
